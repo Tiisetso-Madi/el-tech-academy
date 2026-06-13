@@ -11,6 +11,7 @@ export default function ChapterPage() {
   const { chapterId } = useParams();
   const router = useRouter();
 const [user, setUser] = useState(null);
+const [resources, setResources] = useState([]);
 
   const [lessonCompleted, setLessonCompleted] = useState(false);
 const [saving, setSaving] = useState(false);
@@ -107,6 +108,14 @@ useEffect(() => {
   }
 
 async function loadQuiz(lessonId) {
+
+  const { data: resourcesData } = await supabase
+  .from("lesson_resources")
+  .select("*")
+  .eq("lesson_id", lessonId)
+  .order("display_order");
+
+setResources(resourcesData || []);
   const { data } = await supabase
     .from("lesson_quizzes")
     .select("*")
@@ -283,9 +292,110 @@ function stopDraw() {
         <div className="whitespace-pre-line text-gray-700">
           {currentLesson?.notes}
         </div>
+
+
+{currentLesson?.image_url && (
+  <div className="mt-4">
+    <img
+      src={currentLesson.image_url}
+      alt={currentLesson.image_caption || "Lesson Example"}
+      className="rounded-lg border max-w-full"
+    />
+
+    {currentLesson.image_caption && (
+      <p className="text-sm text-gray-500 mt-2">
+        {currentLesson.image_caption}
+      </p>
+    )}
+  </div>
+)}
+
+
+
       </div>
 
       {/* QUIZ CARD */}
+
+      {/* LESSON RESOURCES */}
+{resources.length > 0 && (
+  <div className="bg-white p-6 rounded-xl shadow mb-6">
+
+    <h3 className="text-xl font-bold mb-4">
+      📚 Additional Resources
+    </h3>
+
+    {/* PDFs */}
+    {resources.some(r => r.resource_type === "pdf") && (
+      <div className="mb-5">
+        <h4 className="font-semibold mb-2">
+          📄 PDF Notes
+        </h4>
+
+        {resources
+          .filter(r => r.resource_type === "pdf")
+          .map(resource => (
+            <a
+              key={resource.id}
+              href={resource.url}
+              target="_blank"
+              rel="noreferrer"
+              className="block text-blue-600 hover:underline mb-1"
+            >
+              {resource.title}
+            </a>
+          ))}
+      </div>
+    )}
+
+    {/* Videos */}
+    {resources.some(r => r.resource_type === "video") && (
+      <div className="mb-5">
+        <h4 className="font-semibold mb-2">
+          🎥 Videos
+        </h4>
+
+        {resources
+          .filter(r => r.resource_type === "video")
+          .map(resource => (
+            <a
+              key={resource.id}
+              href={resource.url}
+              target="_blank"
+              rel="noreferrer"
+              className="block text-blue-600 hover:underline mb-1"
+            >
+              {resource.title}
+            </a>
+          ))}
+      </div>
+    )}
+
+    {/* Links */}
+    {resources.some(r => r.resource_type === "link") && (
+      <div>
+        <h4 className="font-semibold mb-2">
+          🔗 Useful Links
+        </h4>
+
+        {resources
+          .filter(r => r.resource_type === "link")
+          .map(resource => (
+            <a
+              key={resource.id}
+              href={resource.url}
+              target="_blank"
+              rel="noreferrer"
+              className="block text-blue-600 hover:underline mb-1"
+            >
+              {resource.title}
+            </a>
+          ))}
+      </div>
+    )}
+
+  </div>
+)}
+
 <div className="bg-white p-6 rounded-xl shadow">
 
   <h3 className="text-xl font-bold mb-4">
@@ -423,24 +533,30 @@ function stopDraw() {
         {currentQuestion.question}
       </p>
 
-      {["A", "B", "C", "D"].map((opt) => (
-        <button
-          key={opt}
-          onClick={() => checkAnswer(opt)}
-          className={`block w-full text-left p-2 border rounded mb-2 ${
-            selectedAnswer === opt
-              ? "bg-purple-100"
-              : ""
-          }`}
-        >
-          {opt}.{" "}
-          {
-            currentQuestion[
-              `option_${opt.toLowerCase()}`
-            ]
-          }
-        </button>
-      ))}
+  {["A","B","C","D"].map((opt) => (
+  <button
+    key={opt}
+    onClick={() => checkAnswer(opt)}
+    className="block w-full text-left p-2 border rounded mb-2"
+  >
+    <div>
+      {currentQuestion[`option_${opt.toLowerCase()}`]}
+    </div>
+
+    {currentQuestion[
+      `option_${opt.toLowerCase()}_image`
+    ] && (
+      <img
+        src={
+          currentQuestion[
+            `option_${opt.toLowerCase()}_image`
+          ]
+        }
+        className="mt-2 max-h-40 rounded"
+      />
+    )}
+  </button>
+))}
 
       {feedback && (
         <p className="mt-3 font-semibold">
