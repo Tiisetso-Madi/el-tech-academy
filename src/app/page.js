@@ -35,7 +35,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-bold">
-              Grade 12 Mathematics Platform
+              Learning Platform
             </span>
 
             <h1 className="mt-6 text-6xl font-extrabold leading-tight">
@@ -49,7 +49,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="mt-6 text-xl text-gray-600">
-              Master Grade 12 Mathematics through engaging lessons,
+              Master your learning through engaging lessons,
               quizzes, assessments, past papers and interactive learning
               experiences.
             </p>
@@ -134,8 +134,8 @@ export default function LandingPage() {
           <div className="bg-purple-100 rounded-3xl p-8 shadow-lg">
             <h3 className="text-2xl font-bold mb-4">📚 Lessons</h3>
             <p>
-              Structured CAPS-aligned mathematics lessons covering every
-              topic required for Grade 12.
+              Structured CAPS-aligned  lessons covering every
+              topic required.
             </p>
           </div>
 
