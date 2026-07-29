@@ -199,9 +199,9 @@ export default function RegisterPage() {
             {/* PRICE CARD */}
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-2 text-center">
               <p className="text-xs text-gray-600">Monthly Plan</p>
-              <p className="text-2xl font-bold text-purple-700">R50</p>
+              <p className="text-2xl font-bold text-purple-700"></p>
               <p className="text-xs text-gray-500">
-                Full Grade 12 Maths Access
+                Full Access
               </p>
             </div>
 
