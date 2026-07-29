@@ -65,7 +65,7 @@ export default function LoginPage() {
         </h1>
 
         <p className="mt-4 text-sm text-purple-100 max-w-md">
-          Continue your Grade 12 Mathematics journey with structured lessons,
+          Continue your learning journey with structured lessons,
           practice questions, and exam preparation.
         </p>
 
